@@ -41,6 +41,7 @@ private:
 	const double koef_l = 5;
 
 public:
+	SROK GetSrok();
 	Credit(unsigned long summ, SROK srok);
 	float Ratio();
 	float PayMent();

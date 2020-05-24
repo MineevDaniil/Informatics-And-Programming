@@ -19,4 +19,5 @@ public:
 	vector<Credit*> GetCredits();
 	bool Athtorization(string count,string password);
 	vector<CreditVariant> Accessed_variants();
+	string Count();
 };

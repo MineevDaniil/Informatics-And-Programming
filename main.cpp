@@ -1,15 +1,132 @@
 #include "ProCenter.h"
 #include "Credit.h"
 #include <iostream>
+
 using namespace std;
 
+int prompt_menu_item()
+{
+	// Выбранный вариант менюж
+	int variant;
+	cout << "1. Авторизация" << endl;
+	cout << "2. Выход" << endl;
+	cin >> variant;
+	return variant;
+}
+
+int work_menu()
+{
+	// Выбранный вариант менюж
+	int var;
+	cout << "1. Информация о доступных кредитах " << endl;
+	cout << "2. Проверить наличие кредитов" << endl;
+	cout << "3. Получить кредит" << endl;
+	cout << "4. Выход" << endl;
+	cin >> var;
+	return var;
+}
+
 int main() {
-	ProCenter p_center;
+
+	setlocale(LC_ALL, "Russian");
+
+    ProCenter p_center;
 
 	Client CL1("0001", "Ivanov Ivan Ivanovich ", 100000, "qwerty123");
-	Client CL2("0002", "Ivanov Petr Ivanovich ", 1000000, "asdfjkl;");
+	Client CL2("0002", "Ivanov Petr Ivanovich ", 1000000, "asdfjkl");
 	p_center.AddClient(CL1);
 	p_center.AddClient(CL2);
+
+	int variant = prompt_menu_item();
+	string count;
+	string password;
+
+	switch (variant) {
+	   case 1:
+		   cout << "Введите номер счета: ";
+		   cin >> count;
+		   Client* client;
+		   client = p_center.SearchClient(count);
+
+		   if (client == 0) {
+			   cout << "Неизвестный номер счета!"<<endl;
+			   cin >> count;
+			   return 0;
+		   }
+		   else {
+			   cout << "Введите пароль: ";
+			   cin >> password;
+			   bool ok= client->Athtorization(count, password);
+
+			   vector<CreditVariant> credit_variants;
+
+			   if (ok == true) {
+				   while (true) {
+					   int var = work_menu();
+
+					   vector<Credit*> client_credits;
+					   
+
+					   CreditVariant selected_credit;
+					   int credit_number;
+					   vector<Credit*> Credits;
+					   switch (var) {
+					       case 1:
+		
+							   credit_variants = client->Accessed_variants();
+
+						       for (int i = 0; i < credit_variants.size(); i++) {
+								   cout << i<< ". "<<"Срок: " << credit_variants[i].srok << " лет, макс. сумма: " << credit_variants[i].max_summ << " руб." << endl;
+						       }
+							   
+							   break;
+					       case 2:
+							   Credits=client->GetCredits();
+							   for (int i = 0; i < Credits.size(); i++) {
+								   cout << i << " " << "Кредит на  " << Credits[i]->GetSumm()<< " RUB на "<<Credits[i]->GetSrok()<<" лет" <<endl;
+							   }
+
+							   break;
+						   case 3:
+							   credit_number = 0;
+							   cout << "Выберите тарифный план" << endl;
+							   cin >> credit_number;
+							   selected_credit = credit_variants[credit_number];
+							   unsigned long summ;
+							   cout << "Введите сумму: " << endl;
+							   cin >> summ;
+							   if (summ > selected_credit.max_summ) {
+								   cout << "Сумма слишком велика для выбранного тарифного плана " << endl;
+								   break;
+							   }
+							   else {
+								   Credit new_credit(summ, selected_credit.srok);
+								   client->AddCredit(new_credit);
+							   break;
+							   }
+							  
+						   case 4:
+						      return 0;
+					   }
+				   }
+
+				   cout << endl;
+			   }
+			   else {
+				   cout << "Неверный пароль" << endl;
+				   cin >> count;
+				   return 0;
+			   }   
+		   }
+
+		   break;
+	   case 2:
+		   return 0;
+	   }
+
+
+
+	
 
 	Credit cr_1(750000, YEAR_3);
 	bool accept_cl1 = p_center.Accept(cr_1,CL1);
@@ -67,4 +184,6 @@ int main() {
 	
 	string a;
 	cin >> a;
+
+
 }

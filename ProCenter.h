@@ -1,15 +1,16 @@
 #pragma once
-#include <list>
+#include <vector>
 #include "Client.h"
 using namespace std;
 
 class ProCenter {
 private:
 
-	list<Client*> _client_list;
+	vector<Client*> _client_list;
 	
 public:
 	ProCenter();
 	void AddClient(Client &client);
 	bool Accept(Credit credit,Client client);
+	Client* SearchClient(string count);
 };

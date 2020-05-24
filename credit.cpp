@@ -175,3 +175,6 @@ vector<CreditVariant> CreditVariant::AllVariants()
 
 	return all_variants;
 }
+SROK Credit::GetSrok() {
+	return _srok;
+}

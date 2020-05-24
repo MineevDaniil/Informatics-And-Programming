@@ -53,3 +53,7 @@ vector<CreditVariant> Client::Accessed_variants() {
 	return selected_variants;
 
 }
+
+string Client::Count() {
+	return _count;
+}
